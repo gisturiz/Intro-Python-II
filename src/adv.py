@@ -1,5 +1,4 @@
-import textwrap
-
+from item import Item
 from player import Player
 from room import Room
 
@@ -36,13 +35,14 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Items
+sword = ("Sword", "Long Sword", "outside")
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
-player = Player('Gustavo', room['outside'])
 
 # Write a loop that:
 #
@@ -55,37 +55,27 @@ player = Player('Gustavo', room['outside'])
 #
 # If the user enters "q", quit the game.
 
+player = Player(input("Please enter your name: "), room['outside'])
+print(player.current_room)
+
+directions = ["n", "s", "e", "w"]
+# Create basic REPL loop
 while True:
-    current_room = player.room
-    print('\nYou are currently: ' + str(current_room))
-
-    my_wrap = textwrap.TextWrapper(width = 40)
-    room_description = textwrap.shorten(text = player.room.description, width=150)
-    print('\n' + my_wrap.fill(text = room_description))
-
-    print('\nWhere do you want to go? Press `N` for North, `E` for East, `S` for South, `W` for West \nOr press q to quit')
-    ans = input()
-
-    if ans == 'n' or ans == 'N':
-        if not hasattr(current_room, 'n_to'):
-            print("Sorry you cannot take that path, try again.")
-        else:
-            player.room = player.room.n_to
-    elif ans == 'e' or ans == 'E': 
-        if not hasattr(current_room, 'e_to'):
-            print("Sorry you cannot take that path, try again.")  
-        else:
-            player.room = player.room.e_to
-    elif ans == 's' or ans == 'S':
-        if not hasattr(current_room, 's_to'):
-            print("Sorry you cannot take that path, try again.") 
-        else: 
-            player.room = player.room.s_to
-    elif ans == 'w' or ans == 'W':
-        if not hasattr(current_room, 'w_to'):
-           print("Sorry you cannot take that path, try again.")
-        else:
-            player.room = player.room.w_to
-    elif ans == 'q' or ans == 'Q':
-        break
-print("\nThanks for playing!")
+    # Read command
+    cmd = input("~~> ").lower()
+    # Check if it's n/s/e/w/q
+    if cmd in directions:
+        # Make player travel in that direction
+        player.travel(cmd)
+    elif cmd == "q":
+        # Quit
+        print("Goodbye!")
+        exit()
+    else:
+        print("I did not recognize that command")
+    
+    if player.current_room.items == []:
+       None
+    else: 
+        for i in player.inventory:
+            print("You have the option of picking up the following items: " + i + "\n")
