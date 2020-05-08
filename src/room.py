@@ -17,7 +17,7 @@ class Room:
         display_string += f"\n{self.name}\n"
         display_string += f"\n{self.description}\n"
         display_string += f"\n{self.get_exits_string()}\n"
-        display_string += f"\n{self.get_items()}\n"
+        display_string += f"\nItems inside this room: {self.get_items()}\n"
         return display_string
 
     def get_room_in_direction(self, direction):
@@ -30,6 +30,15 @@ class Room:
             return "No items in this room"
         else:
             return self.items
+            
+    def pick_item(self, item):
+        if item not in self.items:
+            print("There's no such item")
+        else:
+            self.items.remove(item)
+
+    def drop_item(self, item):
+        self.items.append(item)
 
     def get_exits(self):
         exits = []
